@@ -63,27 +63,38 @@ const initTree: Tree = [
   },
 ];
 
+function mapTree(tree: Tree, level: number): Tree {
+  const curLevel = level
+  const mappedTree = tree.map(
+    (el, index) => {
+      if(el.children) {
+        return ({
+          level: curLevel,
+          id: index,
+          name: el.name,
+          children: mapTree(el.children, curLevel+1)
+        })
+      } else {
+        return ({
+          level: curLevel,
+          id: index,
+          name: el.name
+        })
+      }
+    }
+  )
+
+  return mappedTree
+}
+
 function App() {
 
-  const treeWithID = initTree.map(el => ({
-    level: 0,
-    name: el.name,
-    children: el.children?.map(ch => ({
-      level: 1,
-      name: ch.name,
-      children: ch.children?.map(ch => ({
-        level: 2,
-        name: ch.name
-      }))
-    }))
-  }))
-
-  const tree = initTree.map(el => <TreeNodeItem name={el.name} children={el.children} />)
+  const mappedTree = mapTree(initTree, 0)
+  console.log(mappedTree)
+  const tree = mappedTree.map(el => <TreeNodeItem name={el.name} children={el.children} />)
   
   return (
-    <>
-      {tree}
-    </>
+    <>{tree}</>
   );
 }
 
