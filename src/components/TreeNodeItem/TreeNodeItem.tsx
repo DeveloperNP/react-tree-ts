@@ -26,7 +26,9 @@ export const TreeNodeItem = ({name, children, id, deleteReactTreeItem, isExpande
   return (
     <div className={s.treeNodeItemContainer}>
       <h3>{id}</h3> {/* FOR DEBUG */}
-      <button onClick={() => { toggleIsExpandedReactTreeItem(id as string) }}>+-</button>
+      <button onClick={() => { toggleIsExpandedReactTreeItem(id as string) }}>
+        {isExpanded ? '-' : '+'}
+      </button>
       {name}
       <button onClick={() => { deleteReactTreeItem(id as string) }}>Del</button>
       <button>Add</button>

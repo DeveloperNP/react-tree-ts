@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './App.css'
+import s from './App.module.css'
 import { TreeNodeItem } from './components/TreeNodeItem/TreeNodeItem'
 
 export type TreeNode = {
@@ -220,11 +220,11 @@ function App() {
                                                  toggleIsExpandedReactTreeItem={toggleIsExpandedReactTreeItem} />)
 
   return (
-    <>
+    <div className={s.appContainer}>
       <button onClick={() => {setTree(setTreeExpanded(tree, true))}}>Expand all</button>
       <button onClick={() => {setTree(setTreeExpanded(tree, false))}}>Collapse all</button>
       {reactTree}
-    </>
+    </div>
   )
 }
 
