@@ -5,11 +5,18 @@ import { TreeNodeItem } from './components/TreeNodeItem/TreeNodeItem'
 export type TreeNode = {
   name: string
   children?: TreeNode[]
-  key?: string
-  isExpanded?: boolean
+}
+
+export type ReactTreeNode = {
+  key: string
+  name: string
+  path: string
+  isExpanded: boolean
+  children?: ReactTreeNode[]
 }
 
 type Tree = TreeNode[]
+type ReactTree = ReactTreeNode[]
 
 const initTree: Tree = [
   {
@@ -109,29 +116,35 @@ const initTree: Tree = [
   },
 ]
 
-function updateTreeKeys(tree: Tree, level: number, parentKey: string): Tree {
+function updateTreeKeys(tree: Tree | ReactTree, level: number = 0, parentKey: string = '', parentItem: string = ''): ReactTree {
+  
   const updatedTree = tree.map(
     (el, index) => {
+      const itemKey = parentKey ? `${parentKey}/${level}-${index}` : `${level}-${index}`
+      const itemPath = parentItem ? `${parentItem} -> ${el.name}` : el.name
+
       if(el.children) {
         return ({
           ...el,
-          key: `${parentKey}/${level}-${index}`,
+          key: itemKey,
+          path: itemPath,
           name: el.name,
-          children: updateTreeKeys(el.children, level+1, `${parentKey}/${level}-${index}`)
-        })
+          children: updateTreeKeys(el.children, level+1, itemKey, itemPath)
+        } as ReactTreeNode)
       } else {
         return ({
           ...el,
           key: `${parentKey}/${level}-${index}`,
+          path: itemPath,
           name: el.name
-        })
+        } as ReactTreeNode)
       }
     }
   )
   return updatedTree
 }
 
-function setTreeExpanded(tree: Tree, expanded: boolean): Tree {
+function setTreeExpanded(tree: ReactTree, expanded: boolean): ReactTree {
   const updatedTree = tree.map(
     (el) => {
       if(el.children) {
@@ -152,8 +165,8 @@ function setTreeExpanded(tree: Tree, expanded: boolean): Tree {
 }
 
 
-export const deleteTreeNode = (array: TreeNode[], id: string) => {
-  return array.reduce((arr: TreeNode[], item) => {
+export const deleteTreeNode = (array: ReactTreeNode[], id: string) => {
+  return array.reduce((arr: ReactTreeNode[], item) => {
     if (item.key !== id) {
       if (item.children) {
         arr.push({
@@ -169,8 +182,8 @@ export const deleteTreeNode = (array: TreeNode[], id: string) => {
   }, [])
 }
 
-export const toggleIsExpanded = (array: TreeNode[], id: string) => {
-  return array.reduce((arr: TreeNode[], item) => {
+export const toggleIsExpanded = (array: ReactTreeNode[], id: string) => {
+  return array.reduce((arr: ReactTreeNode[], item) => {
     
     if (item.key !== id) {
       if (item.children) {
@@ -192,7 +205,7 @@ export const toggleIsExpanded = (array: TreeNode[], id: string) => {
 
 function App() {
 
-  let initReactTree = updateTreeKeys(initTree, 0, '')
+  let initReactTree = updateTreeKeys(initTree)
   initReactTree = setTreeExpanded(initReactTree, false)
 
 
@@ -201,7 +214,7 @@ function App() {
 
   function deleteReactTreeItem(id: string) {
     let updatedTree = deleteTreeNode(tree, id)
-    updatedTree = updateTreeKeys(updatedTree, 0, '')
+    updatedTree = updateTreeKeys(updatedTree)
     setTree(updatedTree)
   }
 
@@ -212,11 +225,12 @@ function App() {
 
 
   const reactTree = tree.map(el => <TreeNodeItem key={el.key}
-                                                 name={el.name}
-                                                 children={el.children}
                                                  id={el.key}
-                                                 deleteReactTreeItem={deleteReactTreeItem}
+                                                 name={el.name}
+                                                 path={el.path}
                                                  isExpanded={el.isExpanded}
+                                                 children={el.children}
+                                                 deleteReactTreeItem={deleteReactTreeItem}
                                                  toggleIsExpandedReactTreeItem={toggleIsExpandedReactTreeItem} />)
 
   return (
