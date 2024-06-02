@@ -3,6 +3,17 @@ import s from './App.module.css'
 import { TreeNodeItem } from './components/TreeNodeItem/TreeNodeItem'
 import { addRootNode, addTreeNode, deleteTreeNode, setTreeExpanded, toggleIsExpanded, updateTreeKeys } from './utils/utils'
 
+// Consta Imports
+import { Theme, presetGpnDefault } from '@consta/uikit/Theme'
+import { Button } from '@consta/uikit/Button'
+import { TextField } from '@consta/uikit/TextField';
+import { IconExpand } from '@consta/icons/IconExpand'
+import { IconCollapse } from '@consta/icons/IconCollapse'
+import { IconAdd } from '@consta/icons/IconAdd'
+import { IconClose } from '@consta/icons/IconClose'
+import { IconCheck } from '@consta/icons/IconCheck'
+
+
 // Types
 export type TreeNode = {
   name: string
@@ -133,7 +144,7 @@ function App() {
 
   const [addRootNodeMode, setAddRootNodeMode] = useState(false)
   const [inputRootValue, setInputRootValue] = useState('')
-
+  
 
   // Adds React Tree Root Item
   function addReactTreeRootItem(newRootNodeName: string) {
@@ -179,21 +190,85 @@ function App() {
  
   // Render
   return (
-    <div className={s.appContainer}>
-      <button onClick={() => {setTree(setTreeExpanded(tree, true))}}>Expand all</button>
-      <button onClick={() => {setTree(setTreeExpanded(tree, false))}}>Collapse all</button>
+    <Theme preset={presetGpnDefault}>
+      <div className={s.appContainer}>
 
-      <button onClick={() => {setAddRootNodeMode(!addRootNodeMode)}}>Add Root</button>
-      { addRootNodeMode &&
-        <div>    
-          <input autoFocus={true} value={inputRootValue} onChange={(event) => setInputRootValue(event.target.value)} />
-          <button onClick={() => {addReactTreeRootItem(inputRootValue)}}>✔</button>
+        <div className={s.buttonsBlock}>
+          <Button
+            onClick={() => {setTree(setTreeExpanded(tree, true))}}
+            label={'Expand all'}
+            size='s'
+            iconRight={IconExpand}
+          />
+
+          <Button
+            onClick={() => {setTree(setTreeExpanded(tree, false))}}
+            label={'Collapse all'}
+            size='s'
+            iconRight={IconCollapse}
+          />
+
+          { addRootNodeMode
+            ? <Button
+                className={s.addRootNodeButton}
+                onClick={() => { setAddRootNodeMode(!addRootNodeMode) }}
+                label={'Cancel'}
+                size='s'
+                iconRight={IconClose}
+                iconSize='s'
+              />
+
+            : <Button
+                className={s.addRootNodeButton}
+                onClick={() => { setAddRootNodeMode(!addRootNodeMode) }}
+                label={'Add Root'}
+                size='s'
+                iconRight={IconAdd}
+                iconSize='s'
+              />
+          }
         </div>
-      }
 
-      {reactTree}
-    </div>
+        { addRootNodeMode &&
+          <div className={s.addRootNodeBlock}>    
+            <TextField
+              autoFocus={true}
+              value={inputRootValue}
+              onChange={(event) => {setInputRootValue(event as string) }}
+              size='s'
+              type='text'
+              placeholder='Enter your text...'
+              withClearButton
+            />
+
+            <Button
+              onClick={() => {addReactTreeRootItem(inputRootValue)}}
+              size='s'
+              iconRight={IconCheck}
+              iconSize='s'
+            />
+          </div>
+        }
+
+        {reactTree}
+      </div>
+    </Theme>
   )
 }
 
 export default App
+
+
+
+export const TextFieldExampleTypeText = () => {
+  const [value, setValue] = useState<string>('');
+
+  return (
+    <TextField
+      onChange={(event) => {setValue(event as string) }}
+      value={value}
+      type="text"
+      placeholder="Одна строчка"
+    />
+  );
+};
