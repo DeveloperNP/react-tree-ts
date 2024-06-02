@@ -2,6 +2,17 @@ import { useState } from 'react'
 import { ReactTreeNode } from '../../App'
 import s from './TreeNodeItem.module.css'
 
+// Consta Imports
+import { Button } from '@consta/uikit/Button'
+import { Text } from '@consta/uikit/Text'
+import { IconArrowRight } from '@consta/icons/IconArrowRight'
+import { IconArrowDown } from '@consta/icons/IconArrowDown'
+import { IconTrash } from '@consta/icons/IconTrash'
+import { IconHealth } from '@consta/icons/IconHealth'
+import { IconClear } from '@consta/icons/IconClear'
+import { IconFolderOpen } from '@consta/icons/IconFolderOpen'
+
+
 type TreeNodeItemType = {
   id: string
   name: string
@@ -49,13 +60,39 @@ export const TreeNodeItem = ({id, name, path, isExpanded, children, addReactTree
 
   return (
     <div className={s.treeNodeItemContainer}>
-      <button onClick={() => { toggleIsExpandedReactTreeItem(id) }}>
-        {isExpanded ? '-' : '+'}
-      </button>
-      {name}
-      <button onClick={() => {deleteNode(id)}}>Del</button>
-      <button onClick={() => {setAddMode(!addMode)}}>Add</button>
-      <button onClick={() => { console.log(path) }}>Path</button>
+      <div className={s.parentContainer}>        
+        <Button
+          onClick={() => { toggleIsExpandedReactTreeItem(id) }}
+          view='secondary'
+          size='s'
+          iconRight={isExpanded ? IconArrowDown : IconArrowRight}
+        />
+        
+        <Text view='brand' size='xl' font='mono' lineHeight='m'>
+          {name}
+        </Text>
+
+        <Button
+          onClick={() => {deleteNode(id)}}
+          view='clear'
+          size='s'
+          iconRight={IconTrash}
+        />
+
+        <Button
+          onClick={() => {setAddMode(!addMode)}}
+          view='clear'
+          size='s'
+          iconRight={addMode ? IconClear : IconHealth}
+        />
+
+        <Button
+          onClick={() => {console.log(path)}}
+          view='clear'
+          size='s'
+          iconRight={IconFolderOpen}
+        /> 
+      </div>
 
       { addMode &&
         <div>    

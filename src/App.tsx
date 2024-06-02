@@ -6,7 +6,7 @@ import { addRootNode, addTreeNode, deleteTreeNode, setTreeExpanded, toggleIsExpa
 // Consta Imports
 import { Theme, presetGpnDefault } from '@consta/uikit/Theme'
 import { Button } from '@consta/uikit/Button'
-import { TextField } from '@consta/uikit/TextField';
+import { TextField } from '@consta/uikit/TextField'
 import { IconExpand } from '@consta/icons/IconExpand'
 import { IconCollapse } from '@consta/icons/IconCollapse'
 import { IconAdd } from '@consta/icons/IconAdd'
@@ -208,25 +208,14 @@ function App() {
             iconRight={IconCollapse}
           />
 
-          { addRootNodeMode
-            ? <Button
-                className={s.addRootNodeButton}
-                onClick={() => { setAddRootNodeMode(!addRootNodeMode) }}
-                label={'Cancel'}
-                size='s'
-                iconRight={IconClose}
-                iconSize='s'
-              />
-
-            : <Button
-                className={s.addRootNodeButton}
-                onClick={() => { setAddRootNodeMode(!addRootNodeMode) }}
-                label={'Add Root'}
-                size='s'
-                iconRight={IconAdd}
-                iconSize='s'
-              />
-          }
+          <Button
+            className={s.addRootNodeButton}
+            onClick={() => { setAddRootNodeMode(!addRootNodeMode) }}
+            label={addRootNodeMode ? 'Cancel' : 'Add Root'}
+            size='s'
+            iconRight={addRootNodeMode ? IconClose : IconAdd}
+            iconSize='s'
+          />
         </div>
 
         { addRootNodeMode &&

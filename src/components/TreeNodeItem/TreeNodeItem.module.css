@@ -1,5 +1,12 @@
 .treeNodeItemContainer {
-  
+
+}
+
+.parentContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin: 5px auto;
 }
 
 .children {
