@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import s from './App.module.css'
 import { TreeNodeItem } from './components/TreeNodeItem/TreeNodeItem'
+import { addRootNode, addTreeNode, deleteTreeNode, setTreeExpanded, toggleIsExpanded, updateTreeKeys } from './utils/utils'
 
+// Types
 export type TreeNode = {
   name: string
   children?: TreeNode[]
@@ -15,9 +17,10 @@ export type ReactTreeNode = {
   children?: ReactTreeNode[]
 }
 
-type Tree = TreeNode[]
-type ReactTree = ReactTreeNode[]
+export type Tree = TreeNode[]
+export type ReactTree = ReactTreeNode[]
 
+// Init Array
 const initTree: Tree = [
   {
     name: "guitars",
@@ -116,190 +119,23 @@ const initTree: Tree = [
   },
 ]
 
-function updateTreeKeys(tree: Tree | ReactTree, level: number = 0, parentKey: string = '', parentItem: string = ''): ReactTree {
-  
-  const updatedTree = tree.map(
-    (el, index) => {
-      const itemKey = parentKey ? `${parentKey}/${level}-${index}` : `${level}-${index}`
-      const itemPath = parentItem ? `${parentItem} -> ${el.name}` : el.name
-
-      if(el.children) {
-        return ({
-          ...el,
-          key: itemKey,
-          path: itemPath,
-          name: el.name,
-          children: updateTreeKeys(el.children, level+1, itemKey, itemPath)
-        } as ReactTreeNode)
-      } else {
-        return ({
-          ...el,
-          key: `${parentKey}/${level}-${index}`,
-          path: itemPath,
-          name: el.name
-        } as ReactTreeNode)
-      }
-    }
-  )
-  return updatedTree
-}
-
-function setTreeExpanded(tree: ReactTree, expanded: boolean): ReactTree {
-  const updatedTree = tree.map(
-    (el) => {
-      if(el.children) {
-        return ({
-          ...el,
-          isExpanded: expanded,
-          children: setTreeExpanded(el.children, expanded)
-        })
-      } else {
-        return ({
-          ...el,
-          isExpanded: expanded
-        })
-      }
-    }
-  )
-  return updatedTree
-}
-
-
-
-function getChildLevelOf(parentKey: string) {
-  return Number(parentKey.split('/').at(-1)?.split('-')[0]) + 1
-}
-
-export const addTreeNode = (array: ReactTreeNode[], id: string, newNodeName: string) => {
-  return array.reduce((arr: ReactTreeNode[], item) => {
-    if (item.key === id) {
-      
-      if(item.children) {
-        const childLevel = getChildLevelOf(item.key)
-        const newChildID = item.children.length
-        
-        arr.push({
-          ...item,
-          children: [
-            ...item.children,
-            {
-              key: `${item.key}/${childLevel}-${newChildID}`,
-              name: newNodeName,
-              path: `${item.path} -> ${newNodeName}`,
-              isExpanded: false
-            }
-          ]
-        })
-        
-      } else {
-        const childLevel = getChildLevelOf(item.key)
-        const newChildID = 0
-        
-        arr.push({
-          ...item,
-          children: [
-            {
-              key: `${item.key}/${childLevel}-${newChildID}`,
-              name: newNodeName,
-              path: `${item.path} -> ${newNodeName}`,
-              isExpanded: false
-            }
-          ]
-        })
-      }
-
-    } else {
-      if (item.children) {
-        arr.push({
-          ...item,
-          children: addTreeNode(item.children, id, newNodeName)
-        })
-      } else {
-        arr.push({...item})
-      }
-    }
-
-    return arr
-  }, [])
-}
-
-export const addRootNode = (array: ReactTreeNode[], newRootNodeName: string) => {
-  if(array) {    
-    const newRootID = array.length
-    return [
-      ...array,
-      {
-        key: `0-${newRootID}`,
-        name: newRootNodeName,
-        path: newRootNodeName,
-        isExpanded: false
-      }
-    ]
-  } else {
-    return [
-      {
-        key: '0-0',
-        name: newRootNodeName,
-        path: newRootNodeName,
-        isExpanded: false
-      }
-    ]
-  }
-}
-
-
-
-export const deleteTreeNode = (array: ReactTreeNode[], id: string) => {
-  return array.reduce((arr: ReactTreeNode[], item) => {
-    if (item.key !== id) {
-      if (item.children) {
-        arr.push({
-          ...item,
-          children: deleteTreeNode(item.children, id)
-        })
-      } else {
-        arr.push({...item})
-      }
-    }
-
-    return arr
-  }, [])
-}
-
-export const toggleIsExpanded = (array: ReactTreeNode[], id: string) => {
-  return array.reduce((arr: ReactTreeNode[], item) => {
-    
-    if (item.key !== id) {
-      if (item.children) {
-        arr.push({
-          ...item,
-          children: toggleIsExpanded(item.children, id)
-        })
-      } else {
-        arr.push({...item})
-      }
-    } else {
-      arr.push({...item, isExpanded: !item.isExpanded})
-    }
-
-    return arr
-  }, [])
-}
 
 
 function App() {
 
+  // Making Array of elements for React Components from Init Array
+  // Set all Tree Nodes Collapsed
   let initReactTree = updateTreeKeys(initTree)
   initReactTree = setTreeExpanded(initReactTree, false)
 
-
+  // Local State
   const [tree, setTree] = useState(initReactTree)
 
   const [addRootNodeMode, setAddRootNodeMode] = useState(false)
   const [inputRootValue, setInputRootValue] = useState('')
 
 
-
+  // Adds React Tree Root Item
   function addReactTreeRootItem(newRootNodeName: string) {
     if(newRootNodeName) {
       setAddRootNodeMode(false)
@@ -310,23 +146,27 @@ function App() {
     }
   }
 
+  // Adds React Tree Item
   function addReactTreeItem(id: string, newNodeName: string) {
     const updatedTree = addTreeNode(tree, id, newNodeName)
     setTree(updatedTree)
   }
 
+  // Deletes React Tree Item
   function deleteReactTreeItem(id: string) {
     let updatedTree = deleteTreeNode(tree, id)
     updatedTree = updateTreeKeys(updatedTree)
     setTree(updatedTree)
   }
 
+  // Changes React Tree Item state: Expanded / Collapsed
   function toggleIsExpandedReactTreeItem(id: string) {
     const updatedTree = toggleIsExpanded(tree, id)
     setTree(updatedTree)
   }
 
 
+  // Making Array of React Tree Node Items
   const reactTree = tree.map(el => <TreeNodeItem key={el.key}
                                                  id={el.key}
                                                  name={el.name}
@@ -336,7 +176,8 @@ function App() {
                                                  addReactTreeItem={addReactTreeItem}
                                                  deleteReactTreeItem={deleteReactTreeItem}
                                                  toggleIsExpandedReactTreeItem={toggleIsExpandedReactTreeItem} />)
-
+ 
+  // Render
   return (
     <div className={s.appContainer}>
       <button onClick={() => {setTree(setTreeExpanded(tree, true))}}>Expand all</button>

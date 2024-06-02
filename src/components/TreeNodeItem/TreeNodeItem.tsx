@@ -16,6 +16,9 @@ type TreeNodeItemType = {
 export const TreeNodeItem = ({id, name, path, isExpanded, children, addReactTreeItem, deleteReactTreeItem,
                               toggleIsExpandedReactTreeItem}: TreeNodeItemType) => {
 
+  const [addMode, setAddMode] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+
   function deleteNode(id: string) {
     setAddMode(false)
     deleteReactTreeItem(id)
@@ -29,11 +32,8 @@ export const TreeNodeItem = ({id, name, path, isExpanded, children, addReactTree
     }
   }
 
-  const [addMode, setAddMode] = useState(false)
-  const [inputValue, setInputValue] = useState('')
 
-
-
+  
   let childTree = null
   if(children) {
     childTree = children.map(el => <TreeNodeItem key={el.key}
