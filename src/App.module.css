@@ -30,7 +30,7 @@
   width: 375px;
 }
 
-@media (width < 380px) {
+@media (width < 375px) {
   .appContainer {
     margin: 3px
   }
@@ -58,7 +58,7 @@
   }
 }
 
-@media (380px <= width <= 425px) {
+@media (375px <= width <= 425px) {
   .appContainer {
     margin: 5px
   }
@@ -69,19 +69,19 @@
   }
   
   .expandButton {
-    width: 115px;
+    width: 114px;
   }
   
   .collapseButton {
-    width: 125px;
+    width: 122px;
   }
   
   .addRootNodeButton {
-    width: 120px;
+    width: 112px;
   }
   
   .addRootNodeBlock {
     gap: 5px;
-    width: 370px;
+    width: 358px;
   }
 }

@@ -17,7 +17,7 @@
   margin-left: 30px;
 }
 
-@media (width < 380px) {
+@media (width < 375px) {
   .parentContainer {
     gap: 3px;
     margin: 3px auto;
@@ -33,7 +33,7 @@
   }
 }
 
-@media (380px <= width <= 425px) {
+@media (375px <= width <= 425px) {
   .parentContainer {
     gap: 5px;
     margin: 5px auto;
