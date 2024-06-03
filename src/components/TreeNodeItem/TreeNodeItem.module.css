@@ -3,10 +3,18 @@
 }
 
 .parentContainer {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   gap: 5px;
   margin: 5px auto;
+}
+
+.addNodeBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  gap: 10px;
+  width: 275px;
 }
 
 .children {

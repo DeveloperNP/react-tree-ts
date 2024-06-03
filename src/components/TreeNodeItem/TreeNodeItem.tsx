@@ -5,12 +5,14 @@ import s from './TreeNodeItem.module.css'
 // Consta Imports
 import { Button } from '@consta/uikit/Button'
 import { Text } from '@consta/uikit/Text'
+import { TextField } from '@consta/uikit/TextField'
 import { IconArrowRight } from '@consta/icons/IconArrowRight'
 import { IconArrowDown } from '@consta/icons/IconArrowDown'
 import { IconTrash } from '@consta/icons/IconTrash'
 import { IconHealth } from '@consta/icons/IconHealth'
 import { IconClear } from '@consta/icons/IconClear'
 import { IconFolderOpen } from '@consta/icons/IconFolderOpen'
+import { IconCheck } from '@consta/icons/IconCheck'
 
 
 type TreeNodeItemType = {
@@ -59,7 +61,7 @@ export const TreeNodeItem = ({id, name, path, isExpanded, children, addReactTree
   }
 
   return (
-    <div className={s.treeNodeItemContainer}>
+    <>
       <div className={s.parentContainer}>        
         <Button
           onClick={() => { toggleIsExpandedReactTreeItem(id) }}
@@ -95,15 +97,29 @@ export const TreeNodeItem = ({id, name, path, isExpanded, children, addReactTree
       </div>
 
       { addMode &&
-        <div>    
-          <input autoFocus={true} value={inputValue} onChange={(event) => setInputValue(event.target.value)} />
-          <button onClick={() => {addNode(id, inputValue)}}>✔</button>
+        <div className={s.addNodeBlock}>
+          <TextField
+            autoFocus={true}
+            value={inputValue}
+            onChange={(value) => {setInputValue(value as string) }}
+            size='s'
+            type='text'
+            placeholder='Enter your text...'
+            withClearButton
+          />
+
+          <Button
+            onClick={() => {addNode(id, inputValue)}}
+            size='s'
+            iconRight={IconCheck}
+            iconSize='s'
+          />
         </div>
       }
 
       <div className={s.children}>
         {isExpanded && childTree}
       </div>
-    </div>
+    </>
   )
 }

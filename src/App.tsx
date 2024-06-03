@@ -223,7 +223,7 @@ function App() {
             <TextField
               autoFocus={true}
               value={inputRootValue}
-              onChange={(event) => {setInputRootValue(event as string) }}
+              onChange={(value) => {setInputRootValue(value as string) }}
               size='s'
               type='text'
               placeholder='Enter your text...'
@@ -246,18 +246,3 @@ function App() {
 }
 
 export default App
-
-
-
-export const TextFieldExampleTypeText = () => {
-  const [value, setValue] = useState<string>('');
-
-  return (
-    <TextField
-      onChange={(event) => {setValue(event as string) }}
-      value={value}
-      type="text"
-      placeholder="Одна строчка"
-    />
-  );
-};
