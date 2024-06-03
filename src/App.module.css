@@ -10,8 +10,16 @@
   margin: 5px auto;
 }
 
+.expandButton {
+  width: 115px;
+}
+
+.collapseButton {
+  width: 125px;
+}
+
 .addRootNodeButton {
-  width: 120px;
+  width: 115px;
 }
 
 .addRootNodeBlock {
@@ -20,4 +28,60 @@
   justify-content: left;
   gap: 10px;
   width: 375px;
+}
+
+@media (width < 380px) {
+  .appContainer {
+    margin: 3px
+  }
+  
+  .buttonsBlock {
+    gap: 3px;
+    margin: 3px auto;
+  }
+  
+  .expandButton {
+    width: 82px;
+  }
+  
+  .collapseButton {
+    width: 83px;
+  }
+  
+  .addRootNodeButton {
+    width: 96px;
+  }
+  
+  .addRootNodeBlock {
+    gap: 3px;
+    width: 267px;
+  }
+}
+
+@media (380px <= width <= 425px) {
+  .appContainer {
+    margin: 5px
+  }
+  
+  .buttonsBlock {
+    gap: 5px;
+    margin: 5px auto;
+  }
+  
+  .expandButton {
+    width: 115px;
+  }
+  
+  .collapseButton {
+    width: 125px;
+  }
+  
+  .addRootNodeButton {
+    width: 120px;
+  }
+  
+  .addRootNodeBlock {
+    gap: 5px;
+    width: 370px;
+  }
 }

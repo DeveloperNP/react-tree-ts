@@ -193,6 +193,7 @@ function App() {
 
         <div className={s.buttonsBlock}>
           <Button
+            className={s.expandButton}
             onClick={() => {setTree(setTreeExpanded(tree, true))}}
             label={'Expand all'}
             size='s'
@@ -200,6 +201,7 @@ function App() {
           />
 
           <Button
+            className={s.collapseButton}
             onClick={() => {setTree(setTreeExpanded(tree, false))}}
             label={'Collapse all'}
             size='s'

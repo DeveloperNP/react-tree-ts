@@ -16,3 +16,35 @@
 .children {
   margin-left: 30px;
 }
+
+@media (width < 380px) {
+  .parentContainer {
+    gap: 3px;
+    margin: 3px auto;
+  }
+  
+  .addNodeBlock {
+    gap: 3px;
+    width: 200px;
+  }
+  
+  .children {
+    margin-left: 20px;
+  }
+}
+
+@media (380px <= width <= 425px) {
+  .parentContainer {
+    gap: 5px;
+    margin: 5px auto;
+  }
+  
+  .addNodeBlock {
+    gap: 5px;
+    width: 275px;
+  }
+  
+  .children {
+    margin-left: 25px;
+  }
+}
