@@ -86,19 +86,19 @@ const initTree: Tree = [
     ],
   },
   {
-    name: "footbal leagues",
+    name: "football leagues",
     children: [
       {
-        name: "apl",
+        name: "APL",
         children: [
-          { name: "liverpool" },
-          { name: "arsenal" },
-          { name: "man city" },
-          { name: "man united" },
+          { name: "Liverpool" },
+          { name: "Arsenal" },
+          { name: "Man City" },
+          { name: "Man United" },
         ],
       },
       {
-        name: "serie a",
+        name: "Serie A",
         children: [
           {
             name: "AC Milan",
@@ -110,22 +110,20 @@ const initTree: Tree = [
                 name: "Theo",
               },
               {
-                name: "Maignain",
+                name: "Giroud",
               },
             ],
           },
           {
             name: "Inter",
-            children: [
-              {
-                name: "merda",
-              },
-            ],
+          },
+          {
+            name: "Juve",
           },
         ],
       },
-      { name: "la liga" },
-      { name: "liga 1" },
+      { name: "La Liga" },
+      { name: "Liga 1" },
     ],
   },
 ]
